@@ -3,8 +3,6 @@ package user;
 import clients.UserClient;
 import configuration.ClientsConfig;
 import configuration.RestConfig;
-import model.UserInfo;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,11 +24,6 @@ public class UserClientTest {
 
     @Test
     public void getUserInfo() {
-
-        UserInfo userInfo = userClient.getUserInfo("sessionKey");
-        Assert.assertNotNull(userInfo.getUser());
-        Assert.assertNotNull(userInfo.getGroups());
-        Assert.assertNotNull(userInfo.getSettings());
-        // and so on
+        userClient.login("1", "1");
     }
 }

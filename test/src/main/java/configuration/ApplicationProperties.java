@@ -9,6 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 @Setter
 public class ApplicationProperties {
 
-    @Value("${api.base.url}")
+    @Value("${api.base.url:https://api.zipwhip.com/}")
     private String apiBaseUrl;
 }
