@@ -3,7 +3,7 @@ package clients;
 
 import configuration.ApplicationProperties;
 import exceptions.ExternalServiceException;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import model.ResponseWrapper;
 import model.User;
 import model.UserInfo;
@@ -13,8 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-@Log4j
-public final class UserClient {
+@Slf4j
+public class UserClient {
 
     private final RestTemplate restTemplate;
     private final ApplicationProperties applicationProperties;
@@ -37,6 +37,7 @@ public final class UserClient {
                 null,
                 new ParameterizedTypeReference<ResponseWrapper<String>>() {});
 
+        validate(re);
         return re.getBody().getResponse();
     }
 
@@ -50,6 +51,7 @@ public final class UserClient {
                 null,
                 new ParameterizedTypeReference<ResponseWrapper<UserInfo>>() {});
 
+        validate(re);
         return re.getBody().getResponse();
     }
 
@@ -76,10 +78,14 @@ public final class UserClient {
                 .path("user");
     }
 
-    private void validate(ResponseEntity response) throws ExternalServiceException {
+    private void validate(ResponseEntity response) {
 
-        if (!response.getStatusCode().is2xxSuccessful()) {
-            throw new ExternalServiceException();
+        if (!response.getStatusCode().is5xxServerError()) {
+            try {
+                throw new ExternalServiceException();
+            } catch (ExternalServiceException e) {
+                log.error(e.getMessage(), e);
+            }
         }
     }
 }

@@ -22,7 +22,7 @@ public class RestConfig {
 
         return new RestTemplateBuilder()
                 .messageConverters(messageConverter())
-                .interceptors(new ClientCustomInterceptor()) //
+                .interceptors(new ClientCustomInterceptor()) // Custom client interceptor for logging and custom headers
                 .errorHandler(errorHandler()) // We need to set empty error handler to avoid any errors in our tests
                 .build();
     }

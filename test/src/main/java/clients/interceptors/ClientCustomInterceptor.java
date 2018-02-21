@@ -3,6 +3,7 @@ package clients.interceptors;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpRequest;
+import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
@@ -16,6 +17,7 @@ public class ClientCustomInterceptor implements ClientHttpRequestInterceptor{
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
 
+        request.getHeaders().setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         traceRequest(request, body);
         ClientHttpResponse response = execution.execute(request, body);
         traceResponse(response);
@@ -25,6 +27,7 @@ public class ClientCustomInterceptor implements ClientHttpRequestInterceptor{
     private void traceRequest(HttpRequest request, byte[] body) {
 
         log.debug("Request [{}] {}", request.getMethod(), request.getURI());
+        log.debug("Request headers {}", request.getHeaders());
         if (body.length > 0) {
             log.debug("Request body {}", new String(body, Charset.forName("UTF-8")));
         } else {
