@@ -80,7 +80,7 @@ public class UserClient {
 
     private void validate(ResponseEntity response) {
 
-        if (!response.getStatusCode().is5xxServerError()) {
+        if (response.getStatusCode().is5xxServerError()) {
             try {
                 throw new ExternalServiceException();
             } catch (ExternalServiceException e) {
