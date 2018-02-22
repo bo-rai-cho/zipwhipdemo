@@ -24,6 +24,13 @@ public class UserClient {
         this.applicationProperties = applicationProperties;
     }
 
+    /**
+     * Login
+     *
+     * @param username Username
+     * @param password Password
+     * @return Session key
+     */
     public String login(String username, String password) {
 
         String url = userUrlBuilder("login")
