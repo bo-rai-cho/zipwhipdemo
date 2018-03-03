@@ -11,7 +11,7 @@ import org.springframework.web.client.RestOperations;
 public class ClientsConfig {
 
     @Bean
-    public UserClient userClient(ApplicationProperties applicationProperties, RestOperations restOperations) {
-        return new UserClient(applicationProperties, restOperations);
+    public UserClient userClient(RestOperations restOperations) {
+        return new UserClient(restOperations);
     }
 }

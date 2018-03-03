@@ -23,8 +23,10 @@ import org.springframework.web.client.RestTemplate;
 public class RestConfig {
 
     @Bean
-    public RestTemplate restTemplate(ApplicationProperties applicationProperties, HttpMessageConverter messageConverter,
-                                     ClientHttpRequestInterceptor requestInterceptor, ResponseErrorHandler errorHandler,
+    public RestTemplate restTemplate(ApplicationProperties applicationProperties,
+                                     HttpMessageConverter messageConverter,
+                                     ClientHttpRequestInterceptor requestInterceptor,
+                                     ResponseErrorHandler errorHandler,
                                      ClientHttpRequestFactory requestFactory) {
 
         return new RestTemplateBuilder()
