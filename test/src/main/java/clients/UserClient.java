@@ -34,7 +34,7 @@ public class UserClient extends RestClient {
         return post(url, LoginResponse.class).getBody().getResponse();
     }
 
-    private UriComponentsBuilder userUrlBuilder(String pathSegment) {
+    private UriComponentsBuilder userUrlBuilder(String... pathSegment) {
 
         return UriComponentsBuilder.fromHttpUrl(applicationProperties.getApiBaseUrl())
                 .path("user")
