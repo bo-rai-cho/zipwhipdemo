@@ -1,20 +1,20 @@
 package clients.interceptors;
 
 
-import exceptions.ExternalServiceException;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.HttpRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.Charset;
+import java.util.stream.Collectors;
 
 @Slf4j
-public class ClientCustomInterceptor implements ClientHttpRequestInterceptor{
+public class ZipRestClientInterceptor implements ClientHttpRequestInterceptor{
 
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
@@ -26,43 +26,27 @@ public class ClientCustomInterceptor implements ClientHttpRequestInterceptor{
         return response;
     }
 
-    private void traceRequest(HttpRequest request, byte[] body) {
+    private void traceRequest(HttpRequest request, byte[] body) throws IOException {
 
         log.debug("Request [{}] {}", request.getMethod(), request.getURI());
         log.debug("Request headers {}", request.getHeaders());
         if (body.length > 0) {
             log.debug("Request body {}", new String(body, Charset.forName("UTF-8")));
         } else {
-            log.debug("Request body empty");
+            log.debug("Request body is empty");
         }
     }
 
     private void traceResponse(ClientHttpResponse response) throws IOException {
+
         log.debug("Response status [{}] {}", response.getStatusCode().toString(), response.getStatusText());
-        if (!response.getStatusCode().is2xxSuccessful()) {
-            try {
-                validate(response);
-            } catch (ExternalServiceException e) {
-                log.error(e.getMessage(), e);
-            }
-        }
+        log.debug("Response body {}", convert(response.getBody(), Charset.defaultCharset()));
     }
 
-    /**
-     * All-in-one validator of responses
-     *
-     * @param response Client response
-     * @throws IOException IOException
-     * @throws ExternalServiceException External service exception
-     */
-    private void validate(ClientHttpResponse response) throws IOException, ExternalServiceException {
+    private String convert(InputStream inputStream, Charset charset) throws IOException {
 
-        HttpStatus status = response.getStatusCode();
-
-        switch (status) {
-            case INTERNAL_SERVER_ERROR:
-                throw new ExternalServiceException();
-                // and so on
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, charset))) {
+            return br.lines().collect(Collectors.joining(System.lineSeparator()));
         }
     }
 }

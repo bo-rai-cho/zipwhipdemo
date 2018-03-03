@@ -1,10 +1,11 @@
 package exceptions;
 
 
+import org.springframework.web.client.RestClientException;
 
-public class ExternalServiceException extends Exception {
+public class ExternalServiceException extends RestClientException {
 
     public ExternalServiceException() {
-        super("Something is wrong on the server side");
+        super("Remote server error");
     }
 }

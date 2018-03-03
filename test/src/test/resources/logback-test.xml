@@ -14,7 +14,7 @@
 
     <logger name="org.springframework" level="ERROR"/>
 
-    <logger name="clients.interceptors.ClientCustomInterceptor" level="DEBUG">
+    <logger name="clients" level="DEBUG">
         <appender-ref ref="STDOUT" />
     </logger>
 </configuration>

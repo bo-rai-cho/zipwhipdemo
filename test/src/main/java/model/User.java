@@ -8,7 +8,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Data
 @Builder
-public class User {
+public final class User {
 
     private String lastName;
     private String birthday;
@@ -30,6 +30,7 @@ public class User {
                 .birthday(UUID.randomUUID().toString())
                 .lastUpdated(ThreadLocalRandom.current().nextLong())
                 .loc(UUID.randomUUID().toString())
+                .phoneKey(UUID.randomUUID().toString())
                 // and so on
                 .build();
     }

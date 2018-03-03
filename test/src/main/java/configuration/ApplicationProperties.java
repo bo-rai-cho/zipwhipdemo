@@ -11,4 +11,10 @@ public class ApplicationProperties {
 
     @Value("${api.base.url:https://api.zipwhip.com/}")
     private String apiBaseUrl;
+
+    @Value("${api.username:username}")
+    private String username;
+
+    @Value("${api.password:password}")
+    private String password;
 }

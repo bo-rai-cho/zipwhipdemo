@@ -4,14 +4,14 @@ import clients.UserClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestOperations;
 
 @Configuration
 @Import(ApplicationProperties.class)
 public class ClientsConfig {
 
     @Bean
-    public UserClient userClient(RestTemplate restTemplate, ApplicationProperties applicationProperties) {
-        return new UserClient(restTemplate, applicationProperties);
+    public UserClient userClient(ApplicationProperties applicationProperties, RestOperations restOperations) {
+        return new UserClient(applicationProperties, restOperations);
     }
 }

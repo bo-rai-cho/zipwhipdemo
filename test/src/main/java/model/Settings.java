@@ -3,6 +3,6 @@ package model;
 import lombok.Data;
 
 @Data
-public class Settings {
+public final class Settings {
 
 }

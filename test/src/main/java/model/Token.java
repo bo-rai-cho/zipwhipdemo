@@ -3,5 +3,5 @@ package model;
 import lombok.Data;
 
 @Data
-public class Token {
+public final class Token {
 }

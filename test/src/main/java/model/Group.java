@@ -3,7 +3,7 @@ package model;
 import lombok.Data;
 
 @Data
-public class Group {
+public final class Group {
 
     private Long id;
     private Long version;

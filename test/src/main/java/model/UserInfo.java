@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class UserInfo {
+public final class UserInfo {
 
     private Settings settings;
     private User user;

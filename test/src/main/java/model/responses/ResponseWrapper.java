@@ -1,9 +1,9 @@
-package model;
+package model.responses;
 
 import lombok.Data;
 
 @Data
-public class ResponseWrapper<T> {
+public abstract class ResponseWrapper<T> {
 
     private Boolean success;
     private T response;
