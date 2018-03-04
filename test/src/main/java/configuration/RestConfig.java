@@ -33,13 +33,14 @@ public class RestConfig {
                 .rootUri(applicationProperties.getApiBaseUrl())
                 .requestFactory(requestFactory)
                 .messageConverters(messageConverter)
-                .interceptors(requestInterceptor) // Custom client interceptor for logging and custom headers
-                .errorHandler(errorHandler) // We need to set empty error handler to avoid any errors in our tests
+                .interceptors(requestInterceptor)
+                .errorHandler(errorHandler)
                 .build();
     }
 
     @Bean
     public BufferingClientHttpRequestFactory  bufferingClientHttpRequestFactory() {
+        // Buffering client factory for log response
         return new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory());
     }
 
@@ -49,7 +50,7 @@ public class RestConfig {
     }
 
     @Bean
-    public ZipRestTestErrorHandler zipRestErrorHandler(ObjectMapper objectMapper) {
+    public ZipRestTestErrorHandler zipRestTestErrorHandler(ObjectMapper objectMapper) {
         return new ZipRestTestErrorHandler(objectMapper);
     }
 
