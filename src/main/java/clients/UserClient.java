@@ -2,12 +2,11 @@ package clients;
 
 
 import lombok.extern.slf4j.Slf4j;
-import model.responses.LoginResponse;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
+import model.User;
+import model.UserInfo;
+import model.request.FormUrlEncodedData;
+import model.response.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestOperations;
 
 @Slf4j
@@ -28,20 +27,48 @@ public final class UserClient {
      */
     public String login(String username, String password) {
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        FormUrlEncodedData data = new FormUrlEncodedData()
+                .add("username", username)
+                .add("password", password);
 
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        return restOperations.postForEntity("/user/login", data, LoginResponse.class).getBody().getResponse();
+    }
 
-        if (username != null) {
-            map.add("username", username);
-        }
-        if (password != null) {
-            map.add("password", password);
-        }
+    public User save(String sessionKey, String firstName, String lastName, String notes, String email) {
 
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+        FormUrlEncodedData data = FormUrlEncodedData.sessionData(sessionKey)
+                .add("firstName", firstName)
+                .add("lastName", lastName)
+                .add("notes", notes)
+                .add("email", email);
 
-        return restOperations.postForEntity("/user/login", request, LoginResponse.class).getBody().getResponse();
+        return restOperations.postForEntity("/user/save", data, UserResponse.class).getBody().getResponse();
+    }
+
+    public User save(String sessionKey) {
+        return save(sessionKey, null, null, null, null);
+    }
+
+    public UserInfo get(String sessionKey) {
+
+        FormUrlEncodedData data = FormUrlEncodedData.sessionData(sessionKey);
+
+        ResponseEntity<UserInfoResponse> re = restOperations.postForEntity("/user/get", data, UserInfoResponse.class);
+        return re.getBody().getResponse();
+    }
+
+    public void setSignature(String sessionKey, String signature) {
+
+        FormUrlEncodedData data = FormUrlEncodedData.sessionData(sessionKey)
+                .add("signature", signature);
+
+        restOperations.postForEntity("/user/signature/set", data, SignatureSetResponse.class);
+    }
+
+    public void logout(String sessionKey) {
+
+        FormUrlEncodedData data = FormUrlEncodedData.sessionData(sessionKey);
+
+        restOperations.postForEntity("user/logout", data, LogoutResponse.class);
     }
 }

@@ -3,12 +3,13 @@ package clients.handlers;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import exceptions.AccessDeniedException;
 import exceptions.ExternalServiceException;
 import exceptions.WrongArgumentException;
 import lombok.extern.slf4j.Slf4j;
 import model.ErrorMessage;
 import model.ErrorType;
-import model.responses.ErrorResponse;
+import model.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.ResponseErrorHandler;
@@ -55,6 +56,10 @@ public class ZipRestTestErrorHandler implements ResponseErrorHandler {
             case INTERNAL_SERVER_ERROR:
             case BAD_REQUEST:
                 throw new ExternalServiceException();
+
+            case FORBIDDEN:
+                throw new AccessDeniedException();
+
             default:
                 throw new RestClientException("Unknown exception");
         }

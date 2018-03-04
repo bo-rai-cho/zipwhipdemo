@@ -3,6 +3,7 @@ package user;
 import clients.UserClient;
 import configuration.ClientsConfig;
 import configuration.RestConfig;
+import exceptions.AccessDeniedException;
 import exceptions.ExternalServiceException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,5 +37,10 @@ public class UserClientTest {
     @Test (expected = ExternalServiceException.class)
     public void testNullBody() {
         userClient.login(null, null);
+    }
+
+    @Test (expected = AccessDeniedException.class)
+    public void testSaveUserWrongSessionKey() {
+        userClient.save("test");
     }
 }

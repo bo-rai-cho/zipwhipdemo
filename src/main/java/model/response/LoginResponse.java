@@ -1,4 +1,4 @@
-package model.responses;
+package model.response;
 
 
 /**

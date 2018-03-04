@@ -4,7 +4,6 @@ package clients.interceptors;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpRequest;
-import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;

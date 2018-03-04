@@ -12,9 +12,10 @@
         </layout>
     </appender>
 
-    <logger name="org.springframework" level="ERROR"/>
+    <logger name="org.springframework" level="ERROR" />
 
     <logger name="clients" level="DEBUG">
         <appender-ref ref="STDOUT" />
     </logger>
+
 </configuration>
