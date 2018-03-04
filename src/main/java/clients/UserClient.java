@@ -32,8 +32,13 @@ public final class UserClient {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add("username", username);
-        map.add("password", password);
+
+        if (username != null) {
+            map.add("username", username);
+        }
+        if (password != null) {
+            map.add("password", password);
+        }
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 

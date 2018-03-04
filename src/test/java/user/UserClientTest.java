@@ -32,4 +32,9 @@ public class UserClientTest {
     public void testEmptyUsername() {
         userClient.login("", "password");
     }
+
+    @Test (expected = ExternalServiceException.class)
+    public void testNullBody() {
+        userClient.login(null, null);
+    }
 }
