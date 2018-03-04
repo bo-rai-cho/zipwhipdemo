@@ -12,6 +12,7 @@ import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.ResponseErrorHandler;
@@ -24,15 +25,16 @@ public class RestConfig {
 
     @Bean
     public RestTemplate restTemplate(ApplicationProperties applicationProperties,
-                                     HttpMessageConverter messageConverter,
                                      ClientHttpRequestInterceptor requestInterceptor,
                                      ResponseErrorHandler errorHandler,
-                                     ClientHttpRequestFactory requestFactory) {
+                                     ClientHttpRequestFactory requestFactory,
+                                     MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter,
+                                     FormHttpMessageConverter formHttpMessageConverter) {
 
         return new RestTemplateBuilder()
                 .rootUri(applicationProperties.getApiBaseUrl())
                 .requestFactory(requestFactory)
-                .messageConverters(messageConverter)
+                .messageConverters(mappingJackson2HttpMessageConverter, formHttpMessageConverter)
                 .interceptors(requestInterceptor)
                 .errorHandler(errorHandler)
                 .build();
@@ -55,7 +57,12 @@ public class RestConfig {
     }
 
     @Bean
-    public MappingJackson2HttpMessageConverter messageConverter(ObjectMapper objectMapper) {
+    public FormHttpMessageConverter formHttpMessageConverter() {
+        return new FormHttpMessageConverter();
+    }
+
+    @Bean
+    public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter(ObjectMapper objectMapper) {
 
         MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
         messageConverter.setPrettyPrint(true);

@@ -19,7 +19,6 @@ public class ZipRestClientInterceptor implements ClientHttpRequestInterceptor{
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
 
-        request.getHeaders().setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         traceRequest(request, body);
         ClientHttpResponse response = execution.execute(request, body);
         traceResponse(response);
