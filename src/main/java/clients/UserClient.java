@@ -4,9 +4,8 @@ package clients;
 import lombok.extern.slf4j.Slf4j;
 import model.User;
 import model.UserInfo;
-import model.request.FormUrlEncodedData;
+import model.request.EntityUrlEncodedData;
 import model.response.*;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestOperations;
 
 @Slf4j
@@ -27,16 +26,26 @@ public final class UserClient {
      */
     public String login(String username, String password) {
 
-        FormUrlEncodedData data = new FormUrlEncodedData()
+        EntityUrlEncodedData data = new EntityUrlEncodedData()
                 .add("username", username)
                 .add("password", password);
 
         return restOperations.postForEntity("/user/login", data, LoginResponse.class).getBody().getResponse();
     }
 
-    public User save(String sessionKey, String firstName, String lastName, String notes, String email) {
+    /**
+     * Save user
+     *
+     * @param session Session key
+     * @param firstName First name (optional)
+     * @param lastName Last name (optional)
+     * @param notes Notes about the user (optional)
+     * @param email Email associated with this user (optional)
+     * @return This user info
+     */
+    public User save(String session, String firstName, String lastName, String notes, String email) {
 
-        FormUrlEncodedData data = FormUrlEncodedData.sessionData(sessionKey)
+        EntityUrlEncodedData data = EntityUrlEncodedData.session(session)
                 .add("firstName", firstName)
                 .add("lastName", lastName)
                 .add("notes", notes)
@@ -45,30 +54,52 @@ public final class UserClient {
         return restOperations.postForEntity("/user/save", data, UserResponse.class).getBody().getResponse();
     }
 
-    public User save(String sessionKey) {
-        return save(sessionKey, null, null, null, null);
+    /**
+     * Save user
+     *
+     * @param session Session key
+     * @return This user info
+     */
+    public User save(String session) {
+        return save(session, null, null, null, null);
     }
 
-    public UserInfo get(String sessionKey) {
+    /**
+     * Get info about the user associated with the given session key
+     *
+     * @param session Session key
+     * @return User info
+     */
+    public UserInfo get(String session) {
 
-        FormUrlEncodedData data = FormUrlEncodedData.sessionData(sessionKey);
+        EntityUrlEncodedData data = EntityUrlEncodedData.session(session);
 
-        ResponseEntity<UserInfoResponse> re = restOperations.postForEntity("/user/get", data, UserInfoResponse.class);
-        return re.getBody().getResponse();
+        return restOperations.postForEntity("/user/get", data, UserInfoResponse.class).getBody().getResponse();
     }
 
-    public void setSignature(String sessionKey, String signature) {
+    /**
+     * Set signature
+     *
+     * @param session Session key
+     * @param signature Signature
+     */
+    public void setSignature(String session, String signature) {
 
-        FormUrlEncodedData data = FormUrlEncodedData.sessionData(sessionKey)
+        EntityUrlEncodedData data = EntityUrlEncodedData.session(session)
                 .add("signature", signature);
 
         restOperations.postForEntity("/user/signature/set", data, SignatureSetResponse.class);
     }
 
-    public void logout(String sessionKey) {
+    /**
+     * Logout from a session
+     *
+     * @param session Session key
+     */
+    public void logout(String session) {
 
-        FormUrlEncodedData data = FormUrlEncodedData.sessionData(sessionKey);
+        EntityUrlEncodedData data = EntityUrlEncodedData.session(session);
 
-        restOperations.postForEntity("user/logout", data, LogoutResponse.class);
+        restOperations.postForEntity("user/logout", data, LogoutResponse.class).getBody();
     }
 }

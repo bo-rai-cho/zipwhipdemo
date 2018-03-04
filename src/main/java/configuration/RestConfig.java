@@ -1,7 +1,7 @@
 package configuration;
 
 import clients.handlers.ZipRestTestErrorHandler;
-import clients.interceptors.ZipRestClientInterceptor;
+import clients.interceptors.ZipRestTestClientInterceptor;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -46,8 +46,8 @@ public class RestConfig {
     }
 
     @Bean
-    public ZipRestClientInterceptor requestInterceptor() {
-        return new ZipRestClientInterceptor();
+    public ZipRestTestClientInterceptor requestInterceptor() {
+        return new ZipRestTestClientInterceptor();
     }
 
     @Bean

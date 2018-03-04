@@ -18,6 +18,8 @@ import org.springframework.web.client.RestClientException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static model.ErrorType.BUSINESS_ERROR;
+
 
 /**
  * @author Nikolay Ponomarev
@@ -39,17 +41,18 @@ public class ZipRestTestErrorHandler implements ResponseErrorHandler {
     @Override
     public void handleError(ClientHttpResponse response) throws IOException {
 
-        ErrorResponse er = convert(response.getBody()); // Try convert this response to error message
+        HttpStatus status = response.getStatusCode();
+
+        ErrorResponse er = convert(response.getBody(), ErrorResponse.class); // Try convert this response to error message
 
         if (er != null && er.getResponse() != null) {
-            assert !er.getSuccess() : "Success status [true]";
-            throwBusinessError(er.getResponse(), response.getStatusCode());
+            businessError(status, er.getResponse());
         } else {
-            throwServiceError(response.getStatusCode());
+            serviceError(status);
         }
     }
 
-    private void throwServiceError(HttpStatus status) {
+    private void serviceError(HttpStatus status) {
 
         switch (status) {
 
@@ -65,33 +68,29 @@ public class ZipRestTestErrorHandler implements ResponseErrorHandler {
         }
     }
 
-    private void throwBusinessError(ErrorMessage receivedMessage, HttpStatus receivedStatus) {
+    private void businessError(HttpStatus receivedStatus, ErrorMessage receivedMessage) {
 
         int businessCode = receivedMessage.getCode();
 
         switch (businessCode) {
+
             case -703:
-                assertBusinessError(receivedMessage, receivedStatus, ErrorType.BUSINESS_ERROR);
+                assertError(BUSINESS_ERROR, receivedMessage, receivedStatus);
                 throw new WrongArgumentException();
         }
     }
 
-    private void assertBusinessError(ErrorMessage messageReceived, HttpStatus statusReceived, ErrorType expectedErrorType) {
+    private void assertError(ErrorType expectedErrorType, ErrorMessage messageReceived, HttpStatus statusReceived) {
 
-        assert statusReceived == expectedErrorType.getStatus() :
-                "Expected HTTP status " + expectedErrorType.getStatus();
-
-        assert messageReceived.getDesc().equals(expectedErrorType.getMessage()) :
-                "Expected error description " + expectedErrorType.getMessage();
-
-        assert messageReceived.getCode() == expectedErrorType.getCode() :
-                "Expected error code " + expectedErrorType.getCode();
+        assert statusReceived == expectedErrorType.getStatus() : "Expected HTTP status " + expectedErrorType.getStatus();
+        assert messageReceived.getDesc().equals(expectedErrorType.getMessage()) : "Expected error description " + expectedErrorType.getMessage();
+        assert messageReceived.getCode() == expectedErrorType.getCode() : "Expected error code " + expectedErrorType.getCode();
     }
 
-    private ErrorResponse convert(InputStream is) throws IOException {
+    private <T> T convert(InputStream is, Class<T> clazz) throws IOException {
 
         try {
-            return objectMapper.readValue(is, ErrorResponse.class);
+            return objectMapper.readValue(is, clazz);
         } catch (JsonParseException | JsonMappingException e) {
             log.error(e.getMessage(), e);
         }

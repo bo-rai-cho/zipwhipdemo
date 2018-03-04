@@ -13,7 +13,7 @@ import java.nio.charset.Charset;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class ZipRestClientInterceptor implements ClientHttpRequestInterceptor{
+public class ZipRestTestClientInterceptor implements ClientHttpRequestInterceptor{
 
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
