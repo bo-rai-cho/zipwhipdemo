@@ -100,6 +100,6 @@ public final class UserClient {
 
         EntityUrlEncodedData data = EntityUrlEncodedData.session(session);
 
-        restOperations.postForEntity("user/logout", data, LogoutResponse.class).getBody();
+        restOperations.postForEntity("user/logout", data, LogoutResponse.class);
     }
 }
