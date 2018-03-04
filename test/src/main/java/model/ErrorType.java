@@ -13,7 +13,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @AllArgsConstructor
 public enum ErrorType {
 
-    BUSINESS_ERROR(BAD_REQUEST, -793, "Wrong arguments");
+    BUSINESS_ERROR(BAD_REQUEST, -703, "Wrong arguments");
 
     private final HttpStatus status;
     private final int code;

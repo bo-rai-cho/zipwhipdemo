@@ -65,7 +65,7 @@ public class ZipRestTestErrorHandler implements ResponseErrorHandler {
         int businessCode = receivedMessage.getCode();
 
         switch (businessCode) {
-            case -739:
+            case -703:
                 assertBusinessError(receivedMessage, receivedStatus, ErrorType.BUSINESS_ERROR);
                 throw new WrongArgumentException();
         }
