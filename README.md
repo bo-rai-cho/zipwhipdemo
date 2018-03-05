@@ -11,7 +11,9 @@ public void example() {
 
 String sessionKey = userClient.login("username", "password");
 UserInfo userInfo = userClient.get(sessionKey);
-System.out.println(userInfo.getUser().getFirstName());
+System.out.println("First name: " + userInfo.getUser().getFirstName());
+System.out.println("Last name: " + userInfo.getUser().getLastName());
+System.out.println("Last name: " + userInfo.getUser().getPhoneNumber());
 userClient.logout(sessionKey);
 }
 ```
