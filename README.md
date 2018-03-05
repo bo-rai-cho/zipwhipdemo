@@ -14,9 +14,9 @@ public void example() {
     User user = userInfo.getUser();
 
     if (user != null) {
-        System.out.println("First name: " + userInfo.getUser().getFirstName());
-        System.out.println("Last name: " + userInfo.getUser().getLastName());
-        System.out.println("Phone number: " + userInfo.getUser().getPhoneNumber());
+        System.out.println("First name: " + user.getFirstName());
+        System.out.println("Last name: " + user.getLastName());
+        System.out.println("Phone number: " + user.getPhoneNumber());
     }
 }
 ```
