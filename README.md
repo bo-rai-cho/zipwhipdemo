@@ -1,7 +1,7 @@
 # zipwhipdemo
 Demo project for Zipwhip
 
-### Usage
+## Usage
 
 ```java
 @Autowired
