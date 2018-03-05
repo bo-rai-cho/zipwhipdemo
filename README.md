@@ -13,7 +13,7 @@ String sessionKey = userClient.login("username", "password");
 UserInfo userInfo = userClient.get(sessionKey);
 System.out.println("First name: " + userInfo.getUser().getFirstName());
 System.out.println("Last name: " + userInfo.getUser().getLastName());
-System.out.println("Last name: " + userInfo.getUser().getPhoneNumber());
+System.out.println("Phone number: " + userInfo.getUser().getPhoneNumber());
 userClient.logout(sessionKey);
 }
 ```
