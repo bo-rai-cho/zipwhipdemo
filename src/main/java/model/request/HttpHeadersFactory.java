@@ -9,6 +9,10 @@ import org.springframework.http.MediaType;
  */
 public final class HttpHeadersFactory {
 
+    private HttpHeadersFactory() {
+        // prevent instantiation - util class
+    }
+
     public static HttpHeaders contentType(MediaType mediaType) {
 
         HttpHeaders headers = new HttpHeaders();
